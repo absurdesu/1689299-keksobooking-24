@@ -1,3 +1,5 @@
+import {getRandomPositiveFloat} from './util.js';
+
 const TITLES = [
   'Lorem ipsum dolor sit amet, consectetuer adipiscing elit',
   'Aliquam tincidunt mauris eu risus',
@@ -56,4 +58,8 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export {TITLES, DESCRIPTIONS, LODGING_TYPES, CHECKIN_CHECKOUT_TIMES, FEATURES, PHOTOS};
+const getLatitude = () => getRandomPositiveFloat(35.65, 35.7, 5);
+
+const getLongitude = () => getRandomPositiveFloat(139.7, 139.8, 5);
+
+export {TITLES, DESCRIPTIONS, LODGING_TYPES, CHECKIN_CHECKOUT_TIMES, FEATURES, PHOTOS, getLatitude, getLongitude};

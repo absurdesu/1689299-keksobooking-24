@@ -1,13 +1,13 @@
-import {TITLES, DESCRIPTIONS, LODGING_TYPES, CHECKIN_CHECKOUT_TIMES, FEATURES, PHOTOS} from './data.js';
-import {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray} from './util.js';
+import {TITLES, DESCRIPTIONS, LODGING_TYPES, CHECKIN_CHECKOUT_TIMES, FEATURES, PHOTOS, getLatitude, getLongitude} from './data.js';
+import {getRandomPositiveInteger, getRandomArrayElement, getRandomArray} from './util.js';
 
 const AD_COUNT = 10;
 
 const avatarNumbers = Array.from({length: 10}, (elementValue, elementIndex) => elementIndex + 1);
 
 const createAd = () => {
-  const latitude = getRandomPositiveFloat(35.65, 35.7, 5);
-  const longitude = getRandomPositiveFloat(139.7, 139.8, 5);
+  const latitude = getLatitude();
+  const longitude = getLongitude();
   return {
     author: {
       avatar: `img/avatars/user${String(avatarNumbers.shift()).padStart(2, '0')}.png`,
