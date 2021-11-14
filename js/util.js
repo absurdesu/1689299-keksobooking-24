@@ -27,4 +27,8 @@ const getRandomArray = (array) => {
   return newArray.slice(0, getRandomPositiveInteger(0, array.length - 1));
 };
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray};
+const changeElementState = (elements, isDisabled) => {
+  elements.forEach((element) => element.disabled = isDisabled);
+};
+
+export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement, getRandomArray, changeElementState};
