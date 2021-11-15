@@ -1,12 +1,19 @@
-import {createAd} from './data.js';
-import {createCards} from './card.js';
-import './form.js';
-//import {changeFormState} from './form.js';
+import {changeFormState, setFormDefault, setFormSubmit} from './form.js';
+import {MAP, addMap, addMainPin, makeMarkers} from './map.js';
+import {getData} from './api.js';
+import {selectFilters, filterCards} from './filter.js';
+import {showAlert} from './alert.js';
+import {debounce} from './utils/debounce.js';
 
-const AD_COUNT = 1;
+changeFormState();
+addMap();
+addMainPin();
 
-const similarAds = Array.from({length: AD_COUNT}, createAd);
-
-createCards(similarAds);
-
-//changeFormState();
+MAP.whenReady(() => {
+  getData((pins) => {
+    makeMarkers(filterCards(pins));
+    selectFilters(debounce(() => makeMarkers(filterCards(pins)), 500));
+    changeFormState(true);
+    setFormSubmit(setFormDefault);
+  }, showAlert);
+});

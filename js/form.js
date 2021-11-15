@@ -1,4 +1,7 @@
 import {changeElementState} from './util.js';
+import {sendData} from './api.js';
+import {showSuccessMessage, showErrorMessage} from './alert.js';
+import {resetMainPin, closeOpenedPopup} from './map.js';
 
 const lodgingMinPrice = {
   'bungalow': '0',
@@ -24,6 +27,7 @@ const capacitySelect = adForm.querySelectorAll('#capacity option');
 const typeSelect = adForm.querySelector('#type');
 const checkinSelect = adForm.querySelector('#timein');
 const checkoutSelect = adForm.querySelector('#timeout');
+const resetButton = adForm.querySelector('.ad-form__reset');
 
 const changeFormState = (isActive) => {
   if (isActive) {
@@ -68,4 +72,37 @@ const roomNumberChange = () => {
 
 roomNumberSelect.addEventListener('change', roomNumberChange);
 
-export {changeFormState};
+const setFormSubmit = (onSuccess) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSuccess();
+        showSuccessMessage();
+      },
+      showErrorMessage,
+      new FormData(evt.target),
+    );
+  });
+};
+
+const onTypesChange = () => {
+  priceInput.min = lodgingMinPrice[typeSelect.value];
+  priceInput.placeholder = priceInput.min;
+};
+
+const setFormDefault = () => {
+  adForm.reset();
+  mapFilters.reset();
+  onTypesChange();
+  resetMainPin();
+  closeOpenedPopup();
+};
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  setFormDefault();
+});
+
+export {changeFormState, setFormSubmit, setFormDefault};

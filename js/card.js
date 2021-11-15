@@ -7,48 +7,63 @@ const LODGING_TYPES_RUS = {
 };
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-const mapCanvas = document.querySelector('#map-canvas');
+
+const hiddenCheck = (template, element, data, text) => {
+  if (data) {
+    template.querySelector(element).textContent = text;
+  } else {
+    template.querySelector(element).classList.add('hidden');
+  }
+};
 
 const createCard = (card) => {
   const cardElement = cardTemplate.cloneNode(true);
 
-  const cardElementTitle = cardElement.querySelector('.popup__title');
-  cardElementTitle.textContent = `${card.offer.title}`;
+  hiddenCheck(cardElement, '.popup__title', card.offer.title, `${card.offer.title}`);
+  hiddenCheck(cardElement, '.popup__text--address', card.offer.address, `${card.offer.address}`);
+  hiddenCheck(cardElement, '.popup__text--price', card.offer.price, `${card.offer.price} ₽/ночь`);
+  hiddenCheck(cardElement, '.popup__type', card.offer.type, LODGING_TYPES_RUS[card.offer.type]);
+  hiddenCheck(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
+  hiddenCheck(cardElement, '.popup__text--time', card.offer.checkin && card.offer.checkout, `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
 
-  const cardElementAddress = cardElement.querySelector('.popup__text--address');
-  cardElementAddress.textContent = `${card.offer.address}`;
+  if (card.offer.features) {
+    const cardFeatures = cardElement.querySelector('.popup__features');
+    const features = card.offer.features.map((feature) => {
+      const newFeature = document.createElement('li');
+      newFeature.classList.add('popup__feature');
+      newFeature.classList.add(`popup__feature--${feature}`);
+      return newFeature;
+    });
+    cardFeatures.append(...features);
+  } else {
+    cardElement.querySelector('.popup__features').classList.add('hidden');
+  }
 
-  const cardElementPrice = cardElement.querySelector('.popup__text--price');
-  cardElementPrice.textContent = `${card.offer.price} ₽/ночь`;
+  hiddenCheck(cardElement, '.popup__description', card.offer.description, `${card.offer.description}`);
 
-  const cardElementType = cardElement.querySelector('.popup__type');
-  cardElementType.textContent = LODGING_TYPES_RUS[card.offer.type];
+  if (card.offer.photos) {
+    const cardPhotos = cardElement.querySelector('.popup__photos');
+    cardPhotos.innerHTML = '';
+    const pictures = card.offer.photos.map((photo) => {
+      const picture = document.createElement('img');
+      picture.src = photo;
+      picture.width = 45;
+      picture.height = 40;
+      picture.classList.add('popup__photo');
+      return picture;
+    });
+    cardPhotos.append(...pictures);
+  } else {
+    cardElement.querySelector('.popup__photo').classList.add('hidden');
+  }
 
-  const cardElementCapacity = cardElement.querySelector('.popup__text--capacity');
-  cardElementCapacity.textContent = `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`;
+  if (card.author.avatar) {
+    cardElement.querySelector('.popup__avatar').src = `${card.author.avatar}`;
+  } else {
+    cardElement.querySelector('.popup__avatar').classList.add('hidden');
+  }
 
-  const cardElementTime = cardElement.querySelector('.popup__text--time');
-  cardElementTime.textContent = `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`;
-
-  const cardElementFeatures = cardElement.querySelector('.popup__features');
-  cardElementFeatures.textContent = `${card.offer.features}`;
-
-  const cardElementDescription = cardElement.querySelector('.popup__description');
-  cardElementDescription.textContent = `${card.offer.description}`;
-
-  const cardPhotos = cardElement.querySelector('.popup__photos');
-  const getCardPhotos = card.offer.photos.map((photo) => {
-    const cardPhoto = document.createElement('img');
-    cardPhoto.src = photo;
-    cardPhoto.classList.add('popup__photo');
-    return cardPhoto;
-  });
-  cardPhotos.append(...getCardPhotos);
-
-  const cardAvatar = cardElement.querySelector('.popup__avatar');
-  cardAvatar.src = `${card.author.avatar}`;
-
-  mapCanvas.appendChild(cardElement);
+  return cardElement;
 };
 
 const createCards = (cards) => {
@@ -57,4 +72,4 @@ const createCards = (cards) => {
   });
 };
 
-export {createCards};
+export {createCard, createCards};
