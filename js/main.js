@@ -3,7 +3,7 @@ import {MAP, addMap, addMainPin, makeMarkers} from './map.js';
 import {getData} from './api.js';
 import {selectFilters, filterCards} from './filter.js';
 import {showAlert} from './alert.js';
-import {debounce} from './utils/debounce.js';
+import {debounce} from './util.js';
 
 changeFormState();
 addMap();
