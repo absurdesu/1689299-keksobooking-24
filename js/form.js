@@ -105,4 +105,4 @@ resetButton.addEventListener('click', (evt) => {
   setFormDefault();
 });
 
-export {changeFormState, setFormSubmit, setFormDefault};
+export {changeFormState, setFormSubmit, setFormDefault, roomNumberChange};

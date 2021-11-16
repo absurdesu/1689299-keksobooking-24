@@ -1,4 +1,4 @@
-const LODGING_TYPES_RUS = {
+const LODGING_TYPES = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -22,12 +22,13 @@ const createCard = (card) => {
   hiddenCheck(cardElement, '.popup__title', card.offer.title, `${card.offer.title}`);
   hiddenCheck(cardElement, '.popup__text--address', card.offer.address, `${card.offer.address}`);
   hiddenCheck(cardElement, '.popup__text--price', card.offer.price, `${card.offer.price} ₽/ночь`);
-  hiddenCheck(cardElement, '.popup__type', card.offer.type, LODGING_TYPES_RUS[card.offer.type]);
+  hiddenCheck(cardElement, '.popup__type', card.offer.type, LODGING_TYPES[card.offer.type]);
   hiddenCheck(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
   hiddenCheck(cardElement, '.popup__text--time', card.offer.checkin && card.offer.checkout, `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
 
   if (card.offer.features) {
     const cardFeatures = cardElement.querySelector('.popup__features');
+    cardFeatures.innerHTML = '';
     const features = card.offer.features.map((feature) => {
       const newFeature = document.createElement('li');
       newFeature.classList.add('popup__feature');

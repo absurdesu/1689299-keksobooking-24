@@ -1,25 +1,23 @@
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const hideMessage = (evt) => {
+  if (evt.keyCode === 27 || evt.type === 'click') {
+    document.body.lastChild.remove();
+    document.removeEventListener('click', hideMessage);
+    document.removeEventListener('keydown', hideMessage);
 
-const onHideMessage = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-  }
-  document.body.lastChild.remove();
-  document.removeEventListener('click', onHideMessage);
-  document.removeEventListener('keydown', onHideMessage);
-
-  const errorButton = document.querySelector('.error__button');
-  if (errorButton) {
-    errorButton.removeEventListener('click', onHideMessage);
+    const errorButton = document.querySelector('.error__button');
+    if (errorButton) {
+      errorButton.removeEventListener('click', hideMessage);
+      document.removeEventListener('keydown', hideMessage);
+    }
   }
 };
 
 const addListenersOnMessage = () => {
-  document.addEventListener('click', onHideMessage);
-  document.addEventListener('keydown', onHideMessage);
+  document.addEventListener('click', hideMessage);
+  document.addEventListener('keydown', hideMessage);
 };
 
 const showSuccessMessage = () => {
@@ -33,7 +31,7 @@ const showErrorMessage = () => {
   addListenersOnMessage();
 
   const errorButton = message.querySelector('.error__button');
-  errorButton.addEventListener('click', onHideMessage);
+  errorButton.addEventListener('click', hideMessage);
   document.body.append(message);
 };
 
