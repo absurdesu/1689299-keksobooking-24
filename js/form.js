@@ -1,4 +1,3 @@
-import {changeElementState} from './util.js';
 import {sendData} from './api.js';
 import {showSuccessMessage, showErrorMessage} from './alert.js';
 import {resetMainPin, closeOpenedPopup} from './map.js';
@@ -20,7 +19,8 @@ const roomCapacity = {
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
-const activeElements = document.querySelectorAll('.ad-form fieldset, .map__filter, .map__features');
+const activeFormElements = document.querySelectorAll('.ad-form fieldset');
+const activeFilterElements = document.querySelectorAll('.map__filter, .map__features');
 const priceInput = adForm.querySelector('#price');
 const roomNumberSelect = adForm.querySelector('#room_number');
 const capacitySelect = adForm.querySelectorAll('#capacity option');
@@ -28,18 +28,6 @@ const typeSelect = adForm.querySelector('#type');
 const checkinSelect = adForm.querySelector('#timein');
 const checkoutSelect = adForm.querySelector('#timeout');
 const resetButton = adForm.querySelector('.ad-form__reset');
-
-const changeFormState = (isActive) => {
-  if (isActive) {
-    adForm.classList.remove('ad-form--disabled');
-    mapFilters.classList.remove('map__filters--disabled');
-    changeElementState(activeElements, false);
-  } else {
-    adForm.classList.add('ad-form--disabled');
-    mapFilters.classList.add('map__filters--disabled');
-    changeElementState(activeElements, true);
-  }
-};
 
 typeSelect.addEventListener('change', () => {
   priceInput.min = lodgingMinPrice[typeSelect.value];
@@ -105,4 +93,4 @@ resetButton.addEventListener('click', (evt) => {
   setFormDefault();
 });
 
-export {changeFormState, setFormSubmit, setFormDefault, roomNumberChange};
+export {setFormSubmit, setFormDefault, roomNumberChange, activeFormElements, activeFilterElements, adForm, mapFilters};

@@ -1,7 +1,3 @@
-const changeElementState = (elements, isDisabled) => {
-  elements.forEach((element) => element.disabled = isDisabled);
-};
-
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -11,4 +7,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {changeElementState, debounce};
+export {debounce};

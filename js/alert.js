@@ -1,3 +1,5 @@
+import {changeFormState, changeFiltersState} from './state-change.js';
+
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
@@ -6,11 +8,15 @@ const hideMessage = (evt) => {
     document.body.lastChild.remove();
     document.removeEventListener('click', hideMessage);
     document.removeEventListener('keydown', hideMessage);
+    changeFormState(true);
+    changeFiltersState(true);
 
     const errorButton = document.querySelector('.error__button');
     if (errorButton) {
       errorButton.removeEventListener('click', hideMessage);
       document.removeEventListener('keydown', hideMessage);
+      changeFormState(true);
+      changeFiltersState(true);
     }
   }
 };
@@ -22,6 +28,8 @@ const addListenersOnMessage = () => {
 
 const showSuccessMessage = () => {
   const message = successMessageTemplate.cloneNode(true);
+  changeFormState();
+  changeFiltersState();
   addListenersOnMessage();
   document.body.append(message);
 };
@@ -29,6 +37,8 @@ const showSuccessMessage = () => {
 const showErrorMessage = () => {
   const message = errorMessageTemplate.cloneNode(true);
   addListenersOnMessage();
+  changeFormState();
+  changeFiltersState();
 
   const errorButton = message.querySelector('.error__button');
   errorButton.addEventListener('click', hideMessage);

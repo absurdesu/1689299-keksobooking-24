@@ -1,4 +1,10 @@
 import {createCard} from './card.js';
+import {getData} from './api.js';
+import {filterCards, selectFilters} from './filter.js';
+import {debounce} from './util.js';
+import {showAlert} from './alert.js';
+import {setFormSubmit, setFormDefault} from './form.js';
+import {changeFormState, changeFiltersState} from './state-change.js';
 
 const MAP = L.map('map-canvas');
 const MARKERS_LAYER = L.layerGroup().addTo(MAP);
@@ -30,19 +36,6 @@ const adressInput = document.querySelector('#address');
 
 const setAddressInputValue = () => {
   adressInput.value = `${TOKYO_CENTER.lat}, ${TOKYO_CENTER.lng}`;
-};
-
-const addMap = () => {
-  MAP.on('load', () => {
-    setAddressInputValue();
-  });
-  MAP.setView({lat: TOKYO_CENTER.lat, lng: TOKYO_CENTER.lng}, ZOOM);
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(MAP);
 };
 
 const addMainPin = () => {
@@ -87,4 +80,25 @@ const closeOpenedPopup = () => {
   MAP.closePopup();
 };
 
-export {MAP, addMap, addMainPin, makeMarkers, resetMainPin, closeOpenedPopup};
+const addMap = () => {
+  MAP.on('load', () => {
+    setAddressInputValue();
+    changeFormState(true);
+    addMainPin();
+    getData((pins) => {
+      makeMarkers(filterCards(pins));
+      changeFiltersState(true);
+      selectFilters(debounce(() => makeMarkers(filterCards(pins)), 500));
+      setFormSubmit(setFormDefault);
+    }, showAlert);
+  });
+  MAP.setView({lat: TOKYO_CENTER.lat, lng: TOKYO_CENTER.lng}, ZOOM);
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(MAP);
+};
+
+export {addMap, resetMainPin, closeOpenedPopup};
