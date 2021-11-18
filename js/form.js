@@ -42,7 +42,7 @@ checkoutSelect.addEventListener('change', () => {
   checkinSelect.value = checkoutSelect.value;
 });
 
-const capacityChange = () => {
+const changeCapacityOption = () => {
   for (const capacityOption of capacitySelect) {
     if (!capacityOption.disabled) {
       capacityOption.selected = true;
@@ -51,14 +51,14 @@ const capacityChange = () => {
   }
 };
 
-const roomNumberChange = () => {
+const onRoomsNumberChange = () => {
   capacitySelect.forEach((capacityOption) => {
     capacityOption.disabled = !roomCapacity[roomNumberSelect.value].includes(capacityOption.value);
   });
-  capacityChange();
+  changeCapacityOption();
 };
 
-roomNumberSelect.addEventListener('change', roomNumberChange);
+roomNumberSelect.addEventListener('change', onRoomsNumberChange);
 
 const setFormSubmit = (onSuccess) => {
   adForm.addEventListener('submit', (evt) => {
@@ -84,6 +84,7 @@ const setFormDefault = () => {
   adForm.reset();
   mapFilters.reset();
   onTypesChange();
+  onRoomsNumberChange();
   resetMainPin();
   closeOpenedPopup();
 };
@@ -93,4 +94,4 @@ resetButton.addEventListener('click', (evt) => {
   setFormDefault();
 });
 
-export {setFormSubmit, setFormDefault, roomNumberChange, activeFormElements, activeFilterElements, adForm, mapFilters};
+export {setFormSubmit, setFormDefault, onRoomsNumberChange, activeFormElements, activeFilterElements, adForm, mapFilters};

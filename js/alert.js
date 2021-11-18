@@ -3,18 +3,18 @@ import {changeFormState, changeFiltersState} from './state-change.js';
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
 
-const hideMessage = (evt) => {
+const onMessageClose = (evt) => {
   if (evt.keyCode === 27 || evt.type === 'click') {
     document.body.lastChild.remove();
-    document.removeEventListener('click', hideMessage);
-    document.removeEventListener('keydown', hideMessage);
+    document.removeEventListener('click', onMessageClose);
+    document.removeEventListener('keydown', onMessageClose);
     changeFormState(true);
     changeFiltersState(true);
 
     const errorButton = document.querySelector('.error__button');
     if (errorButton) {
-      errorButton.removeEventListener('click', hideMessage);
-      document.removeEventListener('keydown', hideMessage);
+      errorButton.removeEventListener('click', onMessageClose);
+      document.removeEventListener('keydown', onMessageClose);
       changeFormState(true);
       changeFiltersState(true);
     }
@@ -22,8 +22,8 @@ const hideMessage = (evt) => {
 };
 
 const addListenersOnMessage = () => {
-  document.addEventListener('click', hideMessage);
-  document.addEventListener('keydown', hideMessage);
+  document.addEventListener('click', onMessageClose);
+  document.addEventListener('keydown', onMessageClose);
 };
 
 const showSuccessMessage = () => {
@@ -41,7 +41,7 @@ const showErrorMessage = () => {
   changeFiltersState();
 
   const errorButton = message.querySelector('.error__button');
-  errorButton.addEventListener('click', hideMessage);
+  errorButton.addEventListener('click', onMessageClose);
   document.body.append(message);
 };
 

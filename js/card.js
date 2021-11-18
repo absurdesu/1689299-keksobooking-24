@@ -8,7 +8,7 @@ const LODGING_TYPES = {
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const hiddenCheck = (template, element, data, text) => {
+const checkElementData = (template, element, data, text) => {
   if (data) {
     template.querySelector(element).textContent = text;
   } else {
@@ -19,12 +19,12 @@ const hiddenCheck = (template, element, data, text) => {
 const createCard = (card) => {
   const cardElement = cardTemplate.cloneNode(true);
 
-  hiddenCheck(cardElement, '.popup__title', card.offer.title, `${card.offer.title}`);
-  hiddenCheck(cardElement, '.popup__text--address', card.offer.address, `${card.offer.address}`);
-  hiddenCheck(cardElement, '.popup__text--price', card.offer.price, `${card.offer.price} ₽/ночь`);
-  hiddenCheck(cardElement, '.popup__type', card.offer.type, LODGING_TYPES[card.offer.type]);
-  hiddenCheck(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
-  hiddenCheck(cardElement, '.popup__text--time', card.offer.checkin && card.offer.checkout, `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
+  checkElementData(cardElement, '.popup__title', card.offer.title, `${card.offer.title}`);
+  checkElementData(cardElement, '.popup__text--address', card.offer.address, `${card.offer.address}`);
+  checkElementData(cardElement, '.popup__text--price', card.offer.price, `${card.offer.price} ₽/ночь`);
+  checkElementData(cardElement, '.popup__type', card.offer.type, LODGING_TYPES[card.offer.type]);
+  checkElementData(cardElement, '.popup__text--capacity', card.offer.rooms && card.offer.guests, `${card.offer.rooms} комнаты для ${card.offer.guests} гостей`);
+  checkElementData(cardElement, '.popup__text--time', card.offer.checkin && card.offer.checkout, `Заезд после ${card.offer.checkin}, выезд до ${card.offer.checkout}`);
 
   if (card.offer.features) {
     const cardFeatures = cardElement.querySelector('.popup__features');
@@ -40,7 +40,7 @@ const createCard = (card) => {
     cardElement.querySelector('.popup__features').classList.add('hidden');
   }
 
-  hiddenCheck(cardElement, '.popup__description', card.offer.description, `${card.offer.description}`);
+  checkElementData(cardElement, '.popup__description', card.offer.description, `${card.offer.description}`);
 
   if (card.offer.photos) {
     const cardPhotos = cardElement.querySelector('.popup__photos');
@@ -67,10 +67,4 @@ const createCard = (card) => {
   return cardElement;
 };
 
-const createCards = (cards) => {
-  cards.forEach((card) => {
-    createCard(card);
-  });
-};
-
-export {createCard, createCards};
+export {createCard};
